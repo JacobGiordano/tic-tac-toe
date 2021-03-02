@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 16px;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.page-title {
+  display: block;
+  margin: 1rem auto 0;
+  text-align: center;
+}
+
+.main {
+  min-height: 10rem;
+  margin-bottom: 2rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  background-color: burlywood;
+  width: 80%;
+  max-width: 420px;
+  margin: 2rem auto 0;
+}
+
+.board-square {
+  position: relative;
+  border: 1px solid black;
+  min-width: 2rem;
+  min-height: 4rem;
+  cursor: pointer;
+}
+
+.board-square::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+.board-square__text {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  line-height: 0;
+  font-size: calc(24px + (58 - 24) * ((100vw - 300px) / (1600 - 300)));
+}
