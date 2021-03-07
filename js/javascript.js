@@ -74,29 +74,33 @@ const Gameboard = (() => {
     const clickedEl = e.target.closest(".board-square");
     if (clickedEl.querySelector(".board-square__text")) {
       console.log("Already has text");
-    } else { 
-      let currentPlayerMark = GameController.currentPlayer.playerMark;
-      let clickedSquareNum = parseInt(clickedEl.getAttribute("data-square"));
-      gameboard[clickedEl.getAttribute("data-square")] = currentPlayerMark;
-      clickedEl.appendChild(_createSquareText(currentPlayerMark));
-
-      // if (gameboard.length === 9) {
-      //   console.log("Game over");
-      // } else if (gameboard.length >= 5) {
-        _checkForWinner(clickedSquareNum, currentPlayerMark);
-      // }
+      return;
     }
 
-    _render();
+    let currentPlayerMark = GameController.currentPlayer.playerMark;
+    let clickedSquareNum = parseInt(clickedEl.getAttribute("data-square"));
+    gameboard[clickedEl.getAttribute("data-square")] = currentPlayerMark;
+    clickedEl.appendChild(_createSquareText(currentPlayerMark));
+
+    const winnerFound = _checkForWinner(clickedSquareNum, currentPlayerMark);
+    // Since a winner is found, pass true to the _render method and prevent further clicks
+    _render(winnerFound);
+    
     GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
   }
 
-  const _render = () => {
+  const _render = (winnerFound) => {
     const boardSquares = document.querySelectorAll(".board-square");
-    for (let square of boardSquares) {
-      square.addEventListener("click", _clickSquare, false);
+    if (winnerFound) {
+      for (let square of boardSquares) {
+        square.removeEventListener("click", _clickSquare, false);
+      }
     }
-    // console.log(gameboard);
+    else {
+      for (let square of boardSquares) {
+        square.addEventListener("click", _clickSquare, false);
+      }
+    }
   }
 
   _render();
