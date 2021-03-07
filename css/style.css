@@ -23,15 +23,16 @@ body {
 .board {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  background-color: burlywood;
+  background-color: black;
   width: 80%;
   max-width: 420px;
   margin: 2rem auto 0;
+  gap: 2px;
 }
 
 .board-square {
   position: relative;
-  border: 1px solid black;
+  background: white;
   min-width: 2rem;
   min-height: 4rem;
   cursor: pointer;
