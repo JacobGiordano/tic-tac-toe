@@ -41,25 +41,38 @@ const Gameboard = (() => {
   let gameboard = ["", "", "", "", "", "", "", "", ""];
 
   const _checkForWinner = (clickedSquareNum, currentPlayerMark) => {
-    console.log("Checking for winner…");
-    console.log(clickedSquareNum);
     const winCons = [
       // Rows
       [0, 1, 2], [3, 4, 5], [6, 7, 8],
       // Columns
-      [0, 3, 6], [1, 4, 8], [2, 5, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
       // Diagonal
       [0, 4, 8], [2, 4, 6],
     ];
 
-                        // First, filter all of the win cons down to an array of *possible* win cons based on these win con arrays containing the clicked square's number. We do this using `filter`, `includes`, and the clicked square's number…
-    const winConFound = winCons.filter(winCon => winCon.includes(clickedSquareNum))
-                        // Then, look through each possible win con array passed to us from the `filter` method using `some`. We use `some` instead of `forEach` here because once `some` returns true, it stops, whereas `forEach` would just keep going…
-                        .some(possibleWinCon => 
+
+    // First, filter all of the win cons down to an array of *possible* win cons based on these win con arrays containing the clicked square's number. We do this using `filter`, `includes`, and the clicked square's number…
+    const possibleWinCons = winCons.filter(winCon => winCon.includes(clickedSquareNum));
+    // Then, look through each possible win con array passed to us from the `filter` method using `some`. We use `some` instead of `forEach` here because once `some` returns true, it stops, whereas `forEach` would just keep going…
+    const winConFound = possibleWinCons.some(possibleWinCon => 
                           // *Inside* of `some` we use `every` because we want to check every index of the gameboard array, but only at the current win con's indices. As we look at these specific indicies, we want to make sure all 3 contain the current player's mark. If they do, `every` returns true and stops, which causes `some` to return true and stop — because the expression inside of `some` is indeed true — which passes true to the variable `winConFound`.
                           possibleWinCon.every(index => gameboard[index] === currentPlayerMark));
-    console.log(winConFound);
+    if (winConFound) {
+      const matchingWinCon = possibleWinCons.findIndex(possibleWinCon => possibleWinCon.every(index => gameboard[index] === currentPlayerMark));
+      const highlightArray = possibleWinCons[matchingWinCon];
+      _highlightWinner(highlightArray);
+    }
+
     return winConFound;
+  }
+
+  const _highlightWinner = winConArray => {
+    let squares = document.querySelectorAll(".board-square");
+    squares = [...squares];
+    const squareMatches = squares.filter(square => winConArray.includes(parseInt(square.getAttribute("data-square"))));
+    for (let square of squareMatches) {
+      square.classList.add("highlight");
+    }
   }
 
   const _createSquareText = text => {
@@ -73,7 +86,6 @@ const Gameboard = (() => {
   const _clickSquare = e => {
     const clickedEl = e.target.closest(".board-square");
     if (clickedEl.querySelector(".board-square__text")) {
-      console.log("Already has text");
       return;
     }
 
@@ -84,14 +96,19 @@ const Gameboard = (() => {
 
     const winnerFound = _checkForWinner(clickedSquareNum, currentPlayerMark);
     // Since a winner is found, pass true to the _render method and prevent further clicks
-    _render(winnerFound);
-    
+
+    if (winnerFound) {
+      _render(winnerFound);
+    } else {
+      _render();
+    }
+
     GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
   }
 
-  const _render = (winnerFound) => {
+  const _render = winner => {
     const boardSquares = document.querySelectorAll(".board-square");
-    if (winnerFound) {
+    if (winner) {
       for (let square of boardSquares) {
         square.removeEventListener("click", _clickSquare, false);
       }

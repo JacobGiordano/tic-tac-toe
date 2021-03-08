@@ -53,3 +53,8 @@ body {
   line-height: 0;
   font-size: calc(24px + (58 - 24) * ((100vw - 300px) / (1600 - 300)));
 }
+
+.board-square.highlight {
+  background: teal;
+  color: white;
+}
