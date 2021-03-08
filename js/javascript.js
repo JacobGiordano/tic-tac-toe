@@ -9,12 +9,21 @@ const Game = (() => {
     gameData = {};
   }
 
+  console.log("Game initialized!");
+
+})();
+
+const GameUI = (() => {
+  const gameStatus = document.getElementById("game-status");
+
+  return { gameStatus };
 })();
 
 const GameController = (() => {
-  const Player = mark => {
-    let playerMark = mark;
-    return { playerMark };
+  const Player = (name, mark) => {
+    mark;
+    name;
+    return { name, mark };
   };
 
   const setActivePlayer = currentPlayer => {
@@ -29,10 +38,11 @@ const GameController = (() => {
     return activePlayer;
   }
 
-  const player1 = Player("X");
-  const player2 = Player("O");
+  const player1 = Player("Player 1", "X");
+  const player2 = Player("Player 2", "O");
   let currentPlayer = setActivePlayer();
 
+  GameUI.gameStatus.textContent = `${currentPlayer.name}'s turn`;
 
   return { player1, player2, currentPlayer, setActivePlayer };
 })();
@@ -61,6 +71,11 @@ const Gameboard = (() => {
       const matchingWinCon = possibleWinCons.findIndex(possibleWinCon => possibleWinCon.every(index => gameboard[index] === currentPlayerMark));
       const highlightArray = possibleWinCons[matchingWinCon];
       _highlightWinner(highlightArray);
+      return winConFound;
+    }
+    const tieGame = gameboard.every(squareValue => squareValue !== "");
+    if (tieGame) {
+      return "tie";
     }
 
     return winConFound;
@@ -89,7 +104,7 @@ const Gameboard = (() => {
       return;
     }
 
-    let currentPlayerMark = GameController.currentPlayer.playerMark;
+    let currentPlayerMark = GameController.currentPlayer.mark;
     let clickedSquareNum = parseInt(clickedEl.getAttribute("data-square"));
     gameboard[clickedEl.getAttribute("data-square")] = currentPlayerMark;
     clickedEl.appendChild(_createSquareText(currentPlayerMark));
@@ -97,13 +112,16 @@ const Gameboard = (() => {
     const winnerFound = _checkForWinner(clickedSquareNum, currentPlayerMark);
     // Since a winner is found, pass true to the _render method and prevent further clicks
 
-    if (winnerFound) {
+    if (winnerFound == true) {
       _render(winnerFound);
+      GameUI.gameStatus.textContent = `${GameController.currentPlayer.name} wins!`;
+    } else if (winnerFound == "tie") {
+      GameUI.gameStatus.textContent = "Tie game!";
     } else {
       _render();
+      GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
+      GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
     }
-
-    GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
   }
 
   const _render = winner => {
@@ -121,7 +139,6 @@ const Gameboard = (() => {
   }
 
   _render();
-  console.log("Game initialized!");
 
   return {gameboard}
 })();
