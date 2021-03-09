@@ -5,49 +5,22 @@ const Game = (() => {
     player2_wins: 0
   };
 
-  const clearGameData = gameData => {
-    gameData = {};
+  const clearGameData = () => {
+    gameData = {
+      current_player: null,
+      player1_wins: 0,
+      player2_wins: 0
+    };
   }
 
   console.log("Game initialized!");
 
-})();
+  return { clearGameData }
 
-const GameUI = (() => {
-  const gameStatus = document.getElementById("game-status");
-
-  return { gameStatus };
-})();
-
-const GameController = (() => {
-  const Player = (name, mark) => {
-    mark;
-    name;
-    return { name, mark };
-  };
-
-  const setActivePlayer = currentPlayer => {
-    let activePlayer;
-    if (currentPlayer === undefined) {
-      activePlayer = player1;
-    } else if ( currentPlayer === player1 ) {
-      activePlayer = player2;
-    } else {
-      activePlayer = player1;
-    }
-    return activePlayer;
-  }
-
-  const player1 = Player("Player 1", "X");
-  const player2 = Player("Player 2", "O");
-  let currentPlayer = setActivePlayer();
-
-  GameUI.gameStatus.textContent = `${currentPlayer.name}'s turn`;
-
-  return { player1, player2, currentPlayer, setActivePlayer };
 })();
 
 const Gameboard = (() => {
+
   let gameboard = ["", "", "", "", "", "", "", "", ""];
 
   const _checkForWinner = (clickedSquareNum, currentPlayerMark) => {
@@ -110,21 +83,18 @@ const Gameboard = (() => {
     clickedEl.appendChild(_createSquareText(currentPlayerMark));
 
     const winnerFound = _checkForWinner(clickedSquareNum, currentPlayerMark);
-    // Since a winner is found, pass true to the _render method and prevent further clicks
-
     if (winnerFound == true) {
-      _render(winnerFound);
+      _setupClickEvents(winnerFound);
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name} wins!`;
     } else if (winnerFound == "tie") {
       GameUI.gameStatus.textContent = "Tie game!";
     } else {
-      _render();
       GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
     }
   }
 
-  const _render = winner => {
+  const _setupClickEvents = winner => {
     const boardSquares = document.querySelectorAll(".board-square");
     if (winner) {
       for (let square of boardSquares) {
@@ -138,7 +108,60 @@ const Gameboard = (() => {
     }
   }
 
-  _render();
+  const _init = () => {
+    _setupClickEvents();
+  }
+  
+  const resetBoard = () => {
+    gameboard = ["", "", "", "", "", "", "", "", ""];
+    const boardSquares = document.querySelectorAll(".board-square");
+    for (let square of boardSquares) {
+      square.textContent = "";
+      square.classList.remove("highlight");
+    }
+    GameController.currentPlayer = GameController.setActivePlayer(undefined);
+    GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
+    _setupClickEvents();
+  }
+  
+  _init();
 
-  return {gameboard}
+  return {gameboard, resetBoard}
+})();
+
+const GameUI = (() => {
+  const gameStatus = document.getElementById("game-status");
+  const resetButton = document.getElementById("board-reset");
+
+  resetButton.addEventListener("click", Gameboard.resetBoard, false);
+
+  return { gameStatus };
+})();
+
+const GameController = (() => {
+  const Player = (name, mark) => {
+    mark;
+    name;
+    return { name, mark };
+  };
+
+  const setActivePlayer = currentPlayer => {
+    let activePlayer;
+    if (currentPlayer === undefined) {
+      activePlayer = player1;
+    } else if ( currentPlayer === player1 ) {
+      activePlayer = player2;
+    } else {
+      activePlayer = player1;
+    }
+    return activePlayer;
+  }
+
+  const player1 = Player("Player 1", "X");
+  const player2 = Player("Player 2", "O");
+  let currentPlayer = setActivePlayer();
+
+  GameUI.gameStatus.textContent = `${currentPlayer.name}'s turn`;
+
+  return { player1, player2, currentPlayer, setActivePlayer };
 })();
