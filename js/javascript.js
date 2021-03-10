@@ -2,21 +2,22 @@ const Game = (() => {
   let gameData = {
     current_player: null,
     player1_wins: 0,
-    player2_wins: 0
+    player2_wins: 0,
+    tie_games: 0
   };
 
   const clearGameData = () => {
-    gameData = {
+    Game.gameData = {
       current_player: null,
       player1_wins: 0,
-      player2_wins: 0
+      player2_wins: 0,
+      tie_games: 0
     };
   }
 
   console.log("Game initialized!");
 
-  return { clearGameData }
-
+  return { gameData, clearGameData }
 })();
 
 const Gameboard = (() => {
@@ -86,8 +87,17 @@ const Gameboard = (() => {
     if (winnerFound == true) {
       _setupClickEvents(winnerFound);
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name} wins!`;
+      if (GameController.currentPlayer.mark === "X"){
+        Game.gameData.player1_wins++;
+        document.getElementById("player1-wins").textContent = Game.gameData.player1_wins;
+      } else {
+        Game.gameData.player2_wins++;
+        document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
+      }
     } else if (winnerFound == "tie") {
       GameUI.gameStatus.textContent = "Tie game!";
+      Game.gameData.tie_games++;
+      document.getElementById("ties-games").textContent = Game.gameData.tie_games;
     } else {
       GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
@@ -110,6 +120,9 @@ const Gameboard = (() => {
 
   const _init = () => {
     _setupClickEvents();
+    document.getElementById("player1-wins").textContent = Game.gameData.player1_wins;
+    document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
+    document.getElementById("ties-games").textContent = Game.gameData.tie_games;
   }
   
   const resetBoard = () => {
@@ -132,8 +145,13 @@ const Gameboard = (() => {
 const GameUI = (() => {
   const gameStatus = document.getElementById("game-status");
   const resetButton = document.getElementById("board-reset");
-
+  const newGameButton = document.getElementById("new-game");
+  
   resetButton.addEventListener("click", Gameboard.resetBoard, false);
+  newGameButton.addEventListener("click", function() {
+    Gameboard.resetBoard();
+    Game.clearGameData();
+  }, false);
 
   return { gameStatus };
 })();
