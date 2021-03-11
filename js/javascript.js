@@ -95,6 +95,7 @@ const Gameboard = (() => {
         document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
       }
     } else if (winnerFound == "tie") {
+      _setupClickEvents(winnerFound);
       GameUI.gameStatus.textContent = "Tie game!";
       Game.gameData.tie_games++;
       document.getElementById("ties-games").textContent = Game.gameData.tie_games;
@@ -109,10 +110,12 @@ const Gameboard = (() => {
     if (winner) {
       for (let square of boardSquares) {
         square.removeEventListener("click", _clickSquare, false);
+        square.addEventListener("click", resetBoard, false);
       }
     }
-    else {
+    else if (!winner || winner === "tie") {
       for (let square of boardSquares) {
+        square.removeEventListener("click", resetBoard, false);
         square.addEventListener("click", _clickSquare, false);
       }
     }
@@ -125,14 +128,18 @@ const Gameboard = (() => {
     document.getElementById("ties-games").textContent = Game.gameData.tie_games;
   }
   
-  const resetBoard = () => {
+  const resetBoard = resetToPlayer1Boolean => {
     gameboard = ["", "", "", "", "", "", "", "", ""];
     const boardSquares = document.querySelectorAll(".board-square");
     for (let square of boardSquares) {
       square.textContent = "";
       square.classList.remove("highlight");
     }
-    GameController.currentPlayer = GameController.setActivePlayer(undefined);
+    if (resetToPlayer1Boolean === true) {
+      GameController.currentPlayer = GameController.setActivePlayer(undefined);
+    } else {
+      GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
+    }
     GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
     _setupClickEvents();
   }
@@ -144,13 +151,14 @@ const Gameboard = (() => {
 
 const GameUI = (() => {
   const gameStatus = document.getElementById("game-status");
-  const resetButton = document.getElementById("board-reset");
   const newGameButton = document.getElementById("new-game");
   
-  resetButton.addEventListener("click", Gameboard.resetBoard, false);
   newGameButton.addEventListener("click", function() {
-    Gameboard.resetBoard();
+    Gameboard.resetBoard(true);
     Game.clearGameData();
+    document.getElementById("player1-wins").textContent = Game.gameData.player1_wins;
+    document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
+    document.getElementById("ties-games").textContent = Game.gameData.tie_games;
   }, false);
 
   return { gameStatus };
