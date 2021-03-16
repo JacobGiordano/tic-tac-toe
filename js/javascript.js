@@ -26,21 +26,13 @@ const Gameboard = (() => {
 
   const _checkForWinner = (clickedSquareNum, currentPlayerMark) => {
     const winCons = [
-      // Rows
-      [0, 1, 2], [3, 4, 5], [6, 7, 8],
-      // Columns
-      [0, 3, 6], [1, 4, 7], [2, 5, 8],
-      // Diagonal
-      [0, 4, 8], [2, 4, 6],
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],  // Columns
+      [0, 4, 8], [2, 4, 6] // Diagonal
     ];
 
-
-    // First, filter all of the win cons down to an array of *possible* win cons based on these win con arrays containing the clicked square's number. We do this using `filter`, `includes`, and the clicked square's number…
     const possibleWinCons = winCons.filter(winCon => winCon.includes(clickedSquareNum));
-    // Then, look through each possible win con array passed to us from the `filter` method using `some`. We use `some` instead of `forEach` here because once `some` returns true, it stops, whereas `forEach` would just keep going…
-    const winConFound = possibleWinCons.some(possibleWinCon => 
-                          // *Inside* of `some` we use `every` because we want to check every index of the gameboard array, but only at the current win con's indices. As we look at these specific indicies, we want to make sure all 3 contain the current player's mark. If they do, `every` returns true and stops, which causes `some` to return true and stop — because the expression inside of `some` is indeed true — which passes true to the variable `winConFound`.
-                          possibleWinCon.every(index => gameboard[index] === currentPlayerMark));
+    const winConFound = possibleWinCons.some(possibleWinCon => possibleWinCon.every(index => gameboard[index] === currentPlayerMark));
     if (winConFound) {
       const matchingWinCon = possibleWinCons.findIndex(possibleWinCon => possibleWinCon.every(index => gameboard[index] === currentPlayerMark));
       const highlightArray = possibleWinCons[matchingWinCon];
@@ -98,7 +90,7 @@ const Gameboard = (() => {
       _setupClickEvents(winnerFound);
       GameUI.gameStatus.textContent = "Tie game!";
       Game.gameData.tie_games++;
-      document.getElementById("ties-games").textContent = Game.gameData.tie_games;
+      document.getElementById("tie-games").textContent = Game.gameData.tie_games;
     } else {
       GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
@@ -121,11 +113,8 @@ const Gameboard = (() => {
     }
   }
 
-  const _init = () => {
+  const init = () => {
     _setupClickEvents();
-    document.getElementById("player1-wins").textContent = Game.gameData.player1_wins;
-    document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
-    document.getElementById("ties-games").textContent = Game.gameData.tie_games;
   }
   
   const resetBoard = resetToPlayer1Boolean => {
@@ -144,30 +133,71 @@ const Gameboard = (() => {
     _setupClickEvents();
   }
   
-  _init();
+  // _init();
 
-  return {gameboard, resetBoard}
+  return { gameboard, resetBoard, init }
 })();
 
 const GameUI = (() => {
+  const checkForPlayerNames = () => {
+    if (GameUI.player1Name.value.trim() !== "") {
+      console.log("Got Player 1 Name!");
+      console.log(GameUI.player1Name.value);
+      GameController.player1.name = GameUI.player1Name.value;
+      console.log(GameController.player1.name);
+    } else {
+      console.log("Player 1 Name is blank");
+      console.log(GameController.player1.name);
+    }
+    if (GameUI.player2Name.value.trim() !== "") {
+      console.log("Got Player 2 Name!");
+      console.log(GameUI.player2Name.value);
+      GameController.player2.name = GameUI.player2Name.value;
+      console.log(GameController.player2.name);
+    } else {
+      console.log("Player 2 Name is blank");
+      console.log(GameController.player2.name);
+    }
+  }
+
   const gameStatus = document.getElementById("game-status");
-  const newGameButton = document.getElementById("new-game");
-  
-  newGameButton.addEventListener("click", function() {
-    Gameboard.resetBoard(true);
-    Game.clearGameData();
-    document.getElementById("player1-wins").textContent = Game.gameData.player1_wins;
-    document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
-    document.getElementById("ties-games").textContent = Game.gameData.tie_games;
+  const newGameButton = document.getElementById("new-game-btn");
+  const startGameButton = document.getElementById("start-game-btn");
+  const onePlayerGameBtn = document.getElementById("one-player-game-btn");
+  const twoPlayerGameBtn = document.getElementById("two-player-game-btn");
+
+  const player1Name = document.getElementById("player1-name");
+  const player2Name = document.getElementById("player2-name");
+
+  const player1TallyTitle = document.getElementById("player1-tally-title");
+  const player2TallyTitle = document.getElementById("player2-tally-title");
+  const player1Wins = document.getElementById("player1-wins");
+  const player2Wins = document.getElementById("player2-wins");
+  const tieGames = document.getElementById("tie-games");
+
+  startGameButton.addEventListener("click", function() {
+    checkForPlayerNames();
+    player1TallyTitle.textContent = GameController.player1.name + ": ";
+    player2TallyTitle.textContent = GameController.player2.name + ": ";
+    player1Wins.textContent = Game.gameData.player1_wins;
+    player2Wins.textContent = Game.gameData.player2_wins;
+    tieGames.textContent = Game.gameData.tie_games;
+    gameStatus.textContent = GameController.currentPlayer.name + "'s turn";
+    Gameboard.init();
   }, false);
 
-  return { gameStatus };
+  document.addEventListener("click", function(e) {
+    if (e.target === newGameButton || e.target === onePlayerGameBtn || e.target === twoPlayerGameBtn) {
+      Gameboard.resetBoard(true);
+      Game.clearGameData();
+    }
+  }, false);
+
+  return { gameStatus, player1Name, player2Name};
 })();
 
 const GameController = (() => {
   const Player = (name, mark) => {
-    mark;
-    name;
     return { name, mark };
   };
 
