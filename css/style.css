@@ -70,3 +70,7 @@ button {
   background: teal;
   color: white;
 }
+
+.hidden {
+  display: none;
+}

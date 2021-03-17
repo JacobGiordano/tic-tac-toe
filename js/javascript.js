@@ -3,7 +3,8 @@ const Game = (() => {
     current_player: null,
     player1_wins: 0,
     player2_wins: 0,
-    tie_games: 0
+    tie_games: 0,
+    game_mode: null
   };
 
   const clearGameData = () => {
@@ -11,7 +12,8 @@ const Game = (() => {
       current_player: null,
       player1_wins: 0,
       player2_wins: 0,
-      tie_games: 0
+      tie_games: 0,
+      game_mode: null
     };
   }
 
@@ -139,33 +141,16 @@ const Gameboard = (() => {
 })();
 
 const GameUI = (() => {
-  const checkForPlayerNames = () => {
-    if (GameUI.player1Name.value.trim() !== "") {
-      console.log("Got Player 1 Name!");
-      console.log(GameUI.player1Name.value);
-      GameController.player1.name = GameUI.player1Name.value;
-      console.log(GameController.player1.name);
-    } else {
-      console.log("Player 1 Name is blank");
-      console.log(GameController.player1.name);
-    }
-    if (GameUI.player2Name.value.trim() !== "") {
-      console.log("Got Player 2 Name!");
-      console.log(GameUI.player2Name.value);
-      GameController.player2.name = GameUI.player2Name.value;
-      console.log(GameController.player2.name);
-    } else {
-      console.log("Player 2 Name is blank");
-      console.log(GameController.player2.name);
-    }
-  }
-
   const gameStatus = document.getElementById("game-status");
-  const newGameButton = document.getElementById("new-game-btn");
-  const startGameButton = document.getElementById("start-game-btn");
+  const newGameBtn = document.getElementById("new-game-btn");
+  const startGameBtn = document.getElementById("start-game-btn");
   const onePlayerGameBtn = document.getElementById("one-player-game-btn");
   const twoPlayerGameBtn = document.getElementById("two-player-game-btn");
+  const header = document.getElementById("header");
+  const main = document.getElementById("main");
 
+  const player1NameWrapper = document.getElementById("player1-name-wrapper");
+  const player2NameWrapper = document.getElementById("player2-name-wrapper");
   const player1Name = document.getElementById("player1-name");
   const player2Name = document.getElementById("player2-name");
 
@@ -175,8 +160,16 @@ const GameUI = (() => {
   const player2Wins = document.getElementById("player2-wins");
   const tieGames = document.getElementById("tie-games");
 
-  startGameButton.addEventListener("click", function() {
-    checkForPlayerNames();
+  const _checkForPlayerNames = () => {
+    if (GameUI.player1Name.value.trim() !== "") {
+      GameController.player1.name = GameUI.player1Name.value;
+    }
+    if (GameUI.player2Name.value.trim() !== "") {
+      GameController.player2.name = GameUI.player2Name.value;
+    }
+  }
+
+  const _initGameUI = () => {
     player1TallyTitle.textContent = GameController.player1.name + ": ";
     player2TallyTitle.textContent = GameController.player2.name + ": ";
     player1Wins.textContent = Game.gameData.player1_wins;
@@ -184,14 +177,50 @@ const GameUI = (() => {
     tieGames.textContent = Game.gameData.tie_games;
     gameStatus.textContent = GameController.currentPlayer.name + "'s turn";
     Gameboard.init();
+  }
+
+  startGameBtn.addEventListener("click", function() {
+    _checkForPlayerNames();
+    _initGameUI();
+    header.classList.remove("hidden");
+    main.classList.remove("hidden");
   }, false);
 
   document.addEventListener("click", function(e) {
-    if (e.target === newGameButton || e.target === onePlayerGameBtn || e.target === twoPlayerGameBtn) {
+    if (e.target === newGameBtn || e.target === onePlayerGameBtn || e.target === twoPlayerGameBtn) {
       Gameboard.resetBoard(true);
       Game.clearGameData();
+      player1NameWrapper.classList.add("hidden");
+      player2NameWrapper.classList.add("hidden");
+      GameController.player1.name = "Player 1";
+      GameController.player2.name = "Player 2";
+      player1Name.value = null;
+      player2Name.value = null;
+      startGameBtn.disabled = true;
+      _initGameUI();
+      
+      if (e.target === onePlayerGameBtn) {
+        e.target === onePlayerGameBtn ? Game.gameData.game_mode = "1 player" : null;
+        GameController.player2.name = "Computer";
+        player1NameWrapper.classList.remove("hidden");
+      }
+      if (e.target === twoPlayerGameBtn) {
+        e.target === twoPlayerGameBtn ? Game.gameData.game_mode = "2 player" : null;
+        player1NameWrapper.classList.remove("hidden");
+        player2NameWrapper.classList.remove("hidden");
+      }
     }
   }, false);
+
+  document.addEventListener("input", function(e) {
+    if (Game.gameData.game_mode == "2 player" && player1Name.value.length !== 0 && player2Name.value.length !== 0) {
+      startGameBtn.removeAttribute("disabled");
+    } else if (Game.gameData.game_mode == "1 player" && player1Name.value.length !== 0) {
+      startGameBtn.removeAttribute("disabled");
+    } else if (e.target === player1Name || e.target === player2Name) {
+      startGameBtn.disabled = true;
+    }
+  });
 
   return { gameStatus, player1Name, player2Name};
 })();
