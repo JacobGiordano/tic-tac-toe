@@ -12,15 +12,17 @@
   <section id="start-screen" class="start-screen">
     <button id="one-player-game-btn" class="one-player-game-btn">1 Player</button>
     <button id="two-player-game-btn" class="two-player-game-btn">2 Players</button>
-    <div id="player1-name-wrapper" class="player1-name__wrapper hidden">
-      <label id="player1-name__label"  for="player1-name">Player 1's name:</label>
-      <input id="player1-name" type="text" name="player1-name" placeholder="Player 1">
-    </div>
-    <div id="player2-name-wrapper" class="player2-name__wrapper hidden">
-      <label id="player2-name__label"  for="player2-name">Player 2's name:</label>
-      <input id="player2-name" type="text" name="player2-name" placeholder="Player 2">
-    </div>
-    <button id="start-game-btn" class="start-game-btn" disabled>Start</button>
+    <form id="player-names-form" class="player-names-form" action="" method="post">
+      <div id="player1-name-wrapper" class="player1-name__wrapper hidden">
+        <label id="player1-name__label"  for="player1-name">Player 1's name:</label>
+        <input id="player1-name" type="text" name="player1-name" placeholder="Player 1">
+      </div>
+      <div id="player2-name-wrapper" class="player2-name__wrapper hidden">
+        <label id="player2-name__label"  for="player2-name">Player 2's name:</label>
+        <input id="player2-name" type="text" name="player2-name" placeholder="Player 2">
+      </div>
+      <button id="start-game-btn" type="submit" class="start-game-btn" disabled>Start</button>
+    </form>
   </section>
   <header id="header" class="header hidden">
     <div id="score-wrapper" class="score-wrapper">

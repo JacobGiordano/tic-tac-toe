@@ -76,6 +76,7 @@ const Gameboard = (() => {
     let clickedSquareNum = parseInt(clickedEl.getAttribute("data-square"));
     gameboard[clickedEl.getAttribute("data-square")] = currentPlayerMark;
     clickedEl.appendChild(_createSquareText(currentPlayerMark));
+    Gameboard.gameboard = gameboard;
 
     const winnerFound = _checkForWinner(clickedSquareNum, currentPlayerMark);
     if (winnerFound == true) {
@@ -146,9 +147,11 @@ const GameUI = (() => {
   const startGameBtn = document.getElementById("start-game-btn");
   const onePlayerGameBtn = document.getElementById("one-player-game-btn");
   const twoPlayerGameBtn = document.getElementById("two-player-game-btn");
+  
   const header = document.getElementById("header");
   const main = document.getElementById("main");
-
+  const startScreen = document.getElementById("start-screen");
+  const playerNamesForm = document.getElementById("player-names-form");
   const player1NameWrapper = document.getElementById("player1-name-wrapper");
   const player2NameWrapper = document.getElementById("player2-name-wrapper");
   const player1Name = document.getElementById("player1-name");
@@ -179,11 +182,13 @@ const GameUI = (() => {
     Gameboard.init();
   }
 
-  startGameBtn.addEventListener("click", function() {
+  playerNamesForm.addEventListener("submit", function(e) {
+    e.preventDefault();
     _checkForPlayerNames();
     _initGameUI();
     header.classList.remove("hidden");
     main.classList.remove("hidden");
+    startScreen.classList.add("hidden");
   }, false);
 
   document.addEventListener("click", function(e) {
@@ -197,6 +202,9 @@ const GameUI = (() => {
       player1Name.value = null;
       player2Name.value = null;
       startGameBtn.disabled = true;
+      header.classList.add("hidden");
+      main.classList.add("hidden");
+      startScreen.classList.remove("hidden");
       _initGameUI();
       
       if (e.target === onePlayerGameBtn) {
@@ -230,12 +238,41 @@ const GameController = (() => {
     return { name, mark };
   };
 
+  const getRandomIntInclusive = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  const computerPlay = () => {
+    const computerDelay = setTimeout(function() {
+      let availableSquares = [];
+      let gameboardData = document.querySelectorAll(".board-square");
+      gameboardData.forEach((element, index) => {
+        if (element.textContent === "") {
+          availableSquares.push(index);
+        }
+      });
+      let randomSelection = getRandomIntInclusive(0, availableSquares.length - 1);
+      const selection = availableSquares[randomSelection];
+      const targetSquare = document.querySelector('[data-square="' + selection + '"]');
+      if (targetSquare.textContent === "") {
+        targetSquare.click();
+      } else {
+        console.log("Game error. Computer attempted to click an already populated square: " + selection);
+      }
+      clearTimeout(computerDelay);
+    }, 750);
+    computerDelay;
+  }
+
   const setActivePlayer = currentPlayer => {
     let activePlayer;
     if (currentPlayer === undefined) {
       activePlayer = player1;
     } else if ( currentPlayer === player1 ) {
       activePlayer = player2;
+      Game.gameData.game_mode === "1 player" ? computerPlay(Gameboard.gameboard) : null;
     } else {
       activePlayer = player1;
     }
