@@ -89,11 +89,13 @@ const Gameboard = (() => {
         Game.gameData.player2_wins++;
         document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
       }
+      GameUI.boardMsg.classList.remove("opacity-0");
     } else if (winnerFound == "tie") {
       _setupClickEvents(winnerFound);
       GameUI.gameStatus.textContent = "Tie game!";
       Game.gameData.tie_games++;
       document.getElementById("tie-games").textContent = Game.gameData.tie_games;
+      GameUI.boardMsg.classList.remove("opacity-0");
     } else {
       GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
@@ -134,6 +136,7 @@ const Gameboard = (() => {
     }
     GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
     _setupClickEvents();
+    GameUI.boardMsg.classList.add("opacity-0");
   }
   
   // _init();
@@ -162,6 +165,8 @@ const GameUI = (() => {
   const player1Wins = document.getElementById("player1-wins");
   const player2Wins = document.getElementById("player2-wins");
   const tieGames = document.getElementById("tie-games");
+
+  const boardMsg = document.getElementById("board-msg");
 
   const _checkForPlayerNames = () => {
     if (GameUI.player1Name.value.trim() !== "") {
@@ -230,7 +235,7 @@ const GameUI = (() => {
     }
   });
 
-  return { gameStatus, player1Name, player2Name};
+  return { gameStatus, player1Name, player2Name, boardMsg };
 })();
 
 const GameController = (() => {
