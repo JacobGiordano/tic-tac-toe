@@ -138,8 +138,6 @@ const Gameboard = (() => {
     _setupClickEvents();
     GameUI.boardMsg.classList.add("opacity-0");
   }
-  
-  // _init();
 
   return { gameboard, resetBoard, init }
 })();
@@ -152,7 +150,6 @@ const GameUI = (() => {
   const twoPlayerGameBtn = document.getElementById("two-player-game-btn");
   
   const header = document.getElementById("header");
-  const main = document.getElementById("main");
   const startScreen = document.getElementById("start-screen");
   const playerNamesForm = document.getElementById("player-names-form");
   const player1NameWrapper = document.getElementById("player1-name-wrapper");
@@ -192,8 +189,17 @@ const GameUI = (() => {
     _checkForPlayerNames();
     _initGameUI();
     header.classList.remove("hidden");
-    main.classList.remove("hidden");
+    gameStatus.classList.remove("hidden");
     startScreen.classList.add("hidden");
+    const boardSquares = document.querySelectorAll(".board-square");
+    for (let i=0; i < boardSquares.length; i++) {
+      let squareRevealDelay = setInterval(function() {
+        boardSquares[i].classList.add("reveal");
+        clearInterval(squareRevealDelay);
+      }, i * 100);
+      squareRevealDelay;
+    }
+
   }, false);
 
   document.addEventListener("click", function(e) {
@@ -208,8 +214,12 @@ const GameUI = (() => {
       player2Name.value = null;
       startGameBtn.disabled = true;
       header.classList.add("hidden");
-      main.classList.add("hidden");
+      gameStatus.classList.add("hidden");
       startScreen.classList.remove("hidden");
+      const boardSquares = document.querySelectorAll(".board-square");
+      for (let square of boardSquares) {
+        square.classList.contains("reveal") ? square.classList.remove("reveal") : null;
+      }
       _initGameUI();
       
       if (e.target === onePlayerGameBtn) {
