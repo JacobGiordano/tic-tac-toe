@@ -43,7 +43,7 @@ button {
   text-align: center;
 }
 
-.header, .start-screen, .game-status, .board-msg {
+.header, .game-status, .board-msg {
   display: block;
   width: 80%;
   max-width: 420px;
@@ -51,16 +51,55 @@ button {
 }
 
 .device__inner-wrapper {
+  display: grid;
+  width: 200%;
   min-height: 10rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
+  grid-template-columns: repeat(2, 1fr);
 }
 
-/* .start-screen {
-  border: 1px solid black;
-  padding: 2rem;
-  margin: 2rem;
-  border-radius: 4px;
-} */
+.device__inner-wrapper.shift {
+  animation: .5s forwards shift;
+}
+
+@keyframes shift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.device__inner-wrapper.unshift {
+  animation: .5s forwards unshift;
+}
+
+@keyframes unshift {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.start-screen, .play-screen {
+  margin: 0 2rem;
+  min-height: 530px;
+}
+
+.start-screen {
+  background: red;
+  margin-right: 2rem;
+}
+
+.play-screen {
+  background: blue;
+  margin-left: 2rem;
+}
 
 .device {
   position: relative;
@@ -98,26 +137,7 @@ button {
   width: 80%;
   max-width: 420px;
   margin: 2rem auto 0;
-  /* font-family: 'Monoton', sans-serif; */
-  /* border-radius: 40px;
-  padding: 18px;
-  border: 6px solid gray;
-  box-shadow: 24px 12px 32px 0px rgb(0 0 0 / 50%), 34px 22px 52px 0px rgb(0 0 0 / 25%);
-  overflow: hidden; */
 }
-
-/* .board::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 69%;
-  height: 150%;
-  background: linear-gradient(-90deg, #ffffff47, transparent);
-  transform: rotate(45deg) translate3d(-169px, -117px, 2px);
-  z-index: 2;
-  border: 1px solid #ffffff63;
-  pointer-events: none;
-} */
 
 .board-square {
   position: relative;

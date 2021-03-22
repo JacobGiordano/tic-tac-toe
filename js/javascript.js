@@ -143,6 +143,7 @@ const Gameboard = (() => {
 })();
 
 const GameUI = (() => {
+  const innerWrapper = document.getElementById("device__inner-wrapper");
   const gameStatus = document.getElementById("game-status");
   const newGameBtn = document.getElementById("new-game-btn");
   const startGameBtn = document.getElementById("start-game-btn");
@@ -174,6 +175,17 @@ const GameUI = (() => {
     }
   }
 
+  const handleInnerShift = () => {
+    if (innerWrapper.classList.contains("initial") || innerWrapper.classList.contains("unshift")) {
+      innerWrapper.classList.add("shift");
+      innerWrapper.classList.remove("initial");
+      innerWrapper.classList.remove("unshift");
+    } else {
+      innerWrapper.classList.add("unshift");
+      innerWrapper.classList.remove("shift");
+    }
+  }
+
   const _initGameUI = () => {
     player1TallyTitle.textContent = GameController.player1.name + ": ";
     player2TallyTitle.textContent = GameController.player2.name + ": ";
@@ -188,9 +200,12 @@ const GameUI = (() => {
     e.preventDefault();
     _checkForPlayerNames();
     _initGameUI();
-    header.classList.remove("hidden");
-    gameStatus.classList.remove("hidden");
-    startScreen.classList.add("hidden");
+    // header.classList.remove("hidden");
+    // gameStatus.classList.remove("hidden");
+    // startScreen.classList.add("hidden");
+
+    handleInnerShift();
+
     const boardSquares = document.querySelectorAll(".board-square");
     for (let i=0; i < boardSquares.length; i++) {
       let squareRevealDelay = setInterval(function() {
@@ -206,16 +221,21 @@ const GameUI = (() => {
     if (e.target === newGameBtn || e.target === onePlayerGameBtn || e.target === twoPlayerGameBtn) {
       Gameboard.resetBoard(true);
       Game.clearGameData();
-      player1NameWrapper.classList.add("hidden");
-      player2NameWrapper.classList.add("hidden");
+      // player1NameWrapper.classList.add("hidden");
+      // player2NameWrapper.classList.add("hidden");
       GameController.player1.name = "Player 1";
       GameController.player2.name = "Player 2";
       player1Name.value = null;
       player2Name.value = null;
       startGameBtn.disabled = true;
-      header.classList.add("hidden");
-      gameStatus.classList.add("hidden");
-      startScreen.classList.remove("hidden");
+      // header.classList.add("hidden");
+      // gameStatus.classList.add("hidden");
+      // startScreen.classList.remove("hidden");
+
+        if (e.target === newGameBtn) {
+          handleInnerShift();
+        }
+      
       const boardSquares = document.querySelectorAll(".board-square");
       for (let square of boardSquares) {
         square.classList.contains("reveal") ? square.classList.remove("reveal") : null;
