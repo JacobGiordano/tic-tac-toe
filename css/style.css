@@ -21,7 +21,7 @@ button {
   background: #ffffff;
   border: 1px solid #ffffff;
   border-radius: 4px;
-  margin: .25rem;
+  margin: 1rem .25rem;
   padding: .5rem .75rem;
 }
 
@@ -50,6 +50,19 @@ button {
   margin: 0 auto;
 }
 
+.score-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.game-status, .board-msg {
+  text-align: center;
+}
+
+.game-status {
+  margin: 1rem auto .5rem;
+}
+
 .device__inner-wrapper {
   display: grid;
   width: 200%;
@@ -62,25 +75,23 @@ button {
   animation: .5s forwards shift;
 }
 
+.device__inner-wrapper.unshift {
+  animation: .5s forwards unshift;
+}
+
 @keyframes shift {
   from {
     transform: translate3d(0, 0, 0);
   }
-
   to {
     transform: translate3d(-50%, 0, 0);
   }
-}
-
-.device__inner-wrapper.unshift {
-  animation: .5s forwards unshift;
 }
 
 @keyframes unshift {
   from {
     transform: translate3d(-50%, 0, 0);
   }
-
   to {
     transform: translate3d(0, 0, 0);
   }
@@ -89,16 +100,51 @@ button {
 .start-screen, .play-screen {
   margin: 0 2rem;
   min-height: 530px;
+  opacity: 0;
 }
 
 .start-screen {
-  background: red;
   margin-right: 2rem;
+  padding-top: 7rem;
+  text-align: center;
+}
+
+.start-screen-title {
+  display: block;
+}
+
+.player-names-form > * {
+  margin-bottom: .5rem;
 }
 
 .play-screen {
-  background: blue;
   margin-left: 2rem;
+}
+
+.device__inner-wrapper > *.show {
+  animation: .5s forwards show;
+}
+
+.device__inner-wrapper > *.hide {
+  animation: .5s forwards hide;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .device {
@@ -131,12 +177,11 @@ button {
 .board {
   display: grid;
   position: relative;
-  /* background-color: black; */
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   gap: 10px;
   width: 80%;
   max-width: 420px;
-  margin: 2rem auto 0;
+  margin: 1rem auto 0;
 }
 
 .board-square {
@@ -165,7 +210,6 @@ button {
   from {
     transform: scale(0);
   }
-
   to {
     transform: scale(1);
   }
@@ -185,6 +229,11 @@ button {
   background: #272727;
   color: #ffffff;
   border: 1px solid #ffffff;
+}
+
+.btn.new-game-btn {
+  display: block;
+  margin: 1rem auto 0;
 }
 
 .opacity-0 {

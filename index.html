@@ -14,6 +14,7 @@
     <h1 id="page-title" class="page-title">Tic-Tac-Toe</h1>
     <div id="device__inner-wrapper" class="device__inner-wrapper initial">
       <section id="start-screen" class="start-screen">
+        <span id="start-screen-title" class="start-screen-title">Select Number of Players</span>
         <button id="one-player-game-btn" class="btn one-player-game-btn">1 Player</button><button id="two-player-game-btn" class="btn two-player-game-btn">2 Players</button>
         <form id="player-names-form" class="player-names-form" action="" method="post">
           <div id="player1-name-wrapper" class="player1-name__wrapper hidden">
@@ -30,11 +31,16 @@
       <section id="play-screen" class="play-screen">
         <header id="header" class="header">
           <div id="score-wrapper" class="score-wrapper">
-            <span id="player1-tally-title" class="score-tally__title">Player 1: </span><span id="player1-wins" class="score-tally"></span>
-            <span id="player2-tally-title" class="score-tally__title">Player 2: </span><span id="player2-wins" class="score-tally"></span>
-            <span class="score-tally__title">Tie: </span><span id="tie-games" class="score-tally"></span>
+            <div class="tally-wrapper">
+              <span id="player1-tally-title" class="score-tally__title">Player 1: </span><span id="player1-wins" class="score-tally"></span>
+            </div>
+            <div class="tally-wrapper">
+              <span id="player2-tally-title" class="score-tally__title">Player 2: </span><span id="player2-wins" class="score-tally"></span>
+            </div>
+            <div class="tally-wrapper">
+              <span class="score-tally__title">Tie: </span><span id="tie-games" class="score-tally"></span>
+            </div>
           </div>
-          <button id="new-game-btn" class="btn new-game-btn">New Game</button>
         </header>
         <h2 id="game-status" class="game-status"></h2>
         <span id="board-msg" class="board-msg opacity-0">Click a square to play again</span>
@@ -51,6 +57,7 @@
             <div class="board-square" data-square="8"></div>
           </div>
         </div>
+        <button id="new-game-btn" class="btn new-game-btn">New Game</button>
       </section>
     </div>
   </div>

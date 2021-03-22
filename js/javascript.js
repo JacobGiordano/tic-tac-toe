@@ -150,13 +150,13 @@ const GameUI = (() => {
   const onePlayerGameBtn = document.getElementById("one-player-game-btn");
   const twoPlayerGameBtn = document.getElementById("two-player-game-btn");
   
-  const header = document.getElementById("header");
   const startScreen = document.getElementById("start-screen");
   const playerNamesForm = document.getElementById("player-names-form");
   const player1NameWrapper = document.getElementById("player1-name-wrapper");
   const player2NameWrapper = document.getElementById("player2-name-wrapper");
   const player1Name = document.getElementById("player1-name");
   const player2Name = document.getElementById("player2-name");
+  const playScreen = document.getElementById("play-screen");
 
   const player1TallyTitle = document.getElementById("player1-tally-title");
   const player2TallyTitle = document.getElementById("player2-tally-title");
@@ -180,9 +180,17 @@ const GameUI = (() => {
       innerWrapper.classList.add("shift");
       innerWrapper.classList.remove("initial");
       innerWrapper.classList.remove("unshift");
+      startScreen.classList.add("hide");
+      startScreen.classList.remove("show");
+      playScreen.classList.add("show");
+      playScreen.classList.remove("hide");
     } else {
       innerWrapper.classList.add("unshift");
       innerWrapper.classList.remove("shift");
+      startScreen.classList.add("show");
+      startScreen.classList.remove("hide");
+      playScreen.classList.add("hide");
+      playScreen.classList.remove("show");
     }
   }
 
@@ -200,9 +208,6 @@ const GameUI = (() => {
     e.preventDefault();
     _checkForPlayerNames();
     _initGameUI();
-    // header.classList.remove("hidden");
-    // gameStatus.classList.remove("hidden");
-    // startScreen.classList.add("hidden");
 
     handleInnerShift();
 
@@ -221,19 +226,16 @@ const GameUI = (() => {
     if (e.target === newGameBtn || e.target === onePlayerGameBtn || e.target === twoPlayerGameBtn) {
       Gameboard.resetBoard(true);
       Game.clearGameData();
-      // player1NameWrapper.classList.add("hidden");
-      // player2NameWrapper.classList.add("hidden");
       GameController.player1.name = "Player 1";
       GameController.player2.name = "Player 2";
       player1Name.value = null;
       player2Name.value = null;
       startGameBtn.disabled = true;
-      // header.classList.add("hidden");
-      // gameStatus.classList.add("hidden");
-      // startScreen.classList.remove("hidden");
 
         if (e.target === newGameBtn) {
           handleInnerShift();
+          player1NameWrapper.classList.add("hidden");
+          player2NameWrapper.classList.add("hidden");
         }
       
       const boardSquares = document.querySelectorAll(".board-square");
@@ -246,6 +248,7 @@ const GameUI = (() => {
         e.target === onePlayerGameBtn ? Game.gameData.game_mode = "1 player" : null;
         GameController.player2.name = "Computer";
         player1NameWrapper.classList.remove("hidden");
+        player2NameWrapper.classList.add("hidden");
       }
       if (e.target === twoPlayerGameBtn) {
         e.target === twoPlayerGameBtn ? Game.gameData.game_mode = "2 player" : null;
@@ -264,6 +267,8 @@ const GameUI = (() => {
       startGameBtn.disabled = true;
     }
   });
+
+  startScreen.classList.add("show");
 
   return { gameStatus, player1Name, player2Name, boardMsg };
 })();
