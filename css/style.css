@@ -289,6 +289,19 @@ button.btn > .material-icons {
   opacity: 0;
 }
 
+.flash-text {
+  animation: .5s linear 3 forwards flashText;
+}
+
+@keyframes flashText {
+  from {
+    opacit: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .hidden {
   display: none;
 }

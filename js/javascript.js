@@ -84,17 +84,32 @@ const Gameboard = (() => {
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name} wins!`;
       if (GameController.currentPlayer.mark === "X"){
         Game.gameData.player1_wins++;
-        document.getElementById("player1-wins").textContent = Game.gameData.player1_wins;
+        GameUI.player1Wins.textContent = Game.gameData.player1_wins;
+        GameUI.player1Wins.closest(".tally-wrapper").classList.add("flash-text");
+        const removeFlash = setInterval(() => {
+          GameUI.player1Wins.closest(".tally-wrapper").classList.remove("flash-text");
+          clearInterval(removeFlash);
+        }, 1500);
       } else {
         Game.gameData.player2_wins++;
-        document.getElementById("player2-wins").textContent = Game.gameData.player2_wins;
+        GameUI.player2Wins.textContent = Game.gameData.player2_wins;
+        GameUI.player2Wins.closest(".tally-wrapper").classList.add("flash-text");
+        const removeFlash = setInterval(() => {
+          GameUI.player2Wins.closest(".tally-wrapper").classList.remove("flash-text");
+          clearInterval(removeFlash);
+        }, 1500);
       }
       GameUI.boardMsg.classList.remove("opacity-0");
     } else if (winnerFound == "tie") {
       _setupClickEvents(winnerFound);
       GameUI.gameStatus.textContent = "Tie game!";
       Game.gameData.tie_games++;
-      document.getElementById("tie-games").textContent = Game.gameData.tie_games;
+      GameUI.tieGames.textContent = Game.gameData.tie_games;
+      GameUI.tieGames.closest(".tally-wrapper").classList.add("flash-text");
+      const removeFlash = setInterval(() => {
+        GameUI.tieGames.closest(".tally-wrapper").classList.remove("flash-text");
+        clearInterval(removeFlash);
+      }, 1500);
       GameUI.boardMsg.classList.remove("opacity-0");
     } else {
       GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
@@ -272,7 +287,7 @@ const GameUI = (() => {
 
   startScreen.classList.add("show");
 
-  return { gameStatus, player1Name, player2Name, boardMsg, boardSquares };
+  return { gameStatus, player1Name, player2Name, player1Wins, player2Wins, tieGames, boardMsg, boardSquares };
 })();
 
 const GameController = (() => {
