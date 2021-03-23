@@ -50,7 +50,7 @@ const Gameboard = (() => {
   }
 
   const _highlightWinner = winConArray => {
-    let squares = document.querySelectorAll(".board-square");
+    let squares = GameUI.boardSquares;
     squares = [...squares];
     const squareMatches = squares.filter(square => winConArray.includes(parseInt(square.getAttribute("data-square"))));
     for (let square of squareMatches) {
@@ -103,15 +103,14 @@ const Gameboard = (() => {
   }
 
   const _setupClickEvents = winner => {
-    const boardSquares = document.querySelectorAll(".board-square");
     if (winner) {
-      for (let square of boardSquares) {
+      for (let square of GameUI.boardSquares) {
         square.removeEventListener("click", _clickSquare, false);
         square.addEventListener("click", resetBoard, false);
       }
     }
     else if (!winner || winner === "tie") {
-      for (let square of boardSquares) {
+      for (let square of GameUI.boardSquares) {
         square.removeEventListener("click", resetBoard, false);
         square.addEventListener("click", _clickSquare, false);
       }
@@ -124,8 +123,7 @@ const Gameboard = (() => {
   
   const resetBoard = resetToPlayer1Boolean => {
     gameboard = ["", "", "", "", "", "", "", "", ""];
-    const boardSquares = document.querySelectorAll(".board-square");
-    for (let square of boardSquares) {
+    for (let square of GameUI.boardSquares) {
       square.textContent = "";
       square.classList.remove("highlight");
     }
@@ -165,6 +163,7 @@ const GameUI = (() => {
   const tieGames = document.getElementById("tie-games");
 
   const boardMsg = document.getElementById("board-msg");
+  const boardSquares = document.querySelectorAll(".board-square");
 
   const _checkForPlayerNames = () => {
     if (GameUI.player1Name.value.trim() !== "") {
@@ -185,6 +184,7 @@ const GameUI = (() => {
       playScreen.classList.add("show");
       playScreen.classList.remove("hide");
     } else {
+      
       innerWrapper.classList.add("unshift");
       innerWrapper.classList.remove("shift");
       startScreen.classList.add("show");
@@ -211,7 +211,6 @@ const GameUI = (() => {
 
     handleInnerShift();
 
-    const boardSquares = document.querySelectorAll(".board-square");
     for (let i=0; i < boardSquares.length; i++) {
       let squareRevealDelay = setInterval(function() {
         boardSquares[i].classList.add("reveal");
@@ -222,7 +221,11 @@ const GameUI = (() => {
 
   }, false);
 
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("material-icons")) {
+      e.target.closest(".btn").click();
+      return;
+    }
     if (e.target === newGameBtn || e.target === onePlayerGameBtn || e.target === twoPlayerGameBtn) {
       Gameboard.resetBoard(true);
       Game.clearGameData();
@@ -238,7 +241,6 @@ const GameUI = (() => {
           player2NameWrapper.classList.add("hidden");
         }
       
-      const boardSquares = document.querySelectorAll(".board-square");
       for (let square of boardSquares) {
         square.classList.contains("reveal") ? square.classList.remove("reveal") : null;
       }
@@ -270,7 +272,7 @@ const GameUI = (() => {
 
   startScreen.classList.add("show");
 
-  return { gameStatus, player1Name, player2Name, boardMsg };
+  return { gameStatus, player1Name, player2Name, boardMsg, boardSquares };
 })();
 
 const GameController = (() => {

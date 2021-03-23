@@ -12,6 +12,11 @@ body {
   padding: 1rem;
 }
 
+input {
+  height: 42px;
+  padding: .5rem;
+}
+
 button {
   cursor: pointer;
 }
@@ -21,20 +26,40 @@ button {
   background: #ffffff;
   border: 1px solid #ffffff;
   border-radius: 4px;
-  margin: 1rem .25rem;
+  margin: 1rem .5rem;
   padding: .5rem .75rem;
 }
 
-.btn:first-of-type {
+label, input {
+  margin: .5rem 1rem;
+}
+
+button:first-of-type, .btn:first-of-type, label:first-of-type, input:first-of-type {
   margin-left: 0;
 }
 
-.btn:last-of-type {
+button:last-of-type, .btn:last-of-type, label:last-of-type, input:last-of-type {
   margin-right: 0;
 }
 
-.btn.alt {
+.btn.alt, .start-screen .start-game-btn[disabled] {
   background: #000000;
+}
+
+button.btn.start-game-btn {
+  display: block;
+  margin: 1rem auto 0;
+}
+
+.start-game-btn[disabled] {
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+button.btn > .material-icons {
+  vertical-align: middle;
+  margin-left: .5rem;
 }
 
 .page-title {
@@ -115,6 +140,26 @@ button {
 
 .player-names-form > * {
   margin-bottom: .5rem;
+}
+
+.player1-name__wrapper, .player2-name__wrapper {
+  display: inline-block;
+  text-align: left;
+}
+
+.player2-name__wrapper {
+  margin-left: 1rem;
+}
+
+.player-form__btn, .start-game-btn {
+  width: 10.25rem;
+  height: 42px;
+  text-align: center;
+  display: inline-block;
+}
+
+.player-form__label {
+  display: block;
 }
 
 .play-screen {
@@ -213,6 +258,10 @@ button {
   to {
     transform: scale(1);
   }
+}
+
+.board-square.reveal:focus {
+  transform: scale(.5);
 }
 
 .board-square__text {

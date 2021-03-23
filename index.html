@@ -7,6 +7,7 @@
   <title>Tic Tac Toe</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -15,14 +16,13 @@
     <div id="device__inner-wrapper" class="device__inner-wrapper initial">
       <section id="start-screen" class="start-screen">
         <span id="start-screen-title" class="start-screen-title">Select Number of Players</span>
-        <button id="one-player-game-btn" class="btn one-player-game-btn">1 Player</button><button id="two-player-game-btn" class="btn two-player-game-btn">2 Players</button>
+        <button id="one-player-game-btn" class="btn player-form__btn one-player-game-btn">1 Player<span class="material-icons">person</span></button><button id="two-player-game-btn" class="btn player-form__btn two-player-game-btn">2 Players<span class="material-icons">people</span></button>
         <form id="player-names-form" class="player-names-form" action="" method="post">
-          <div id="player1-name-wrapper" class="player1-name__wrapper hidden">
-            <label id="player1-name__label"  for="player1-name">Player 1 name:</label>
+          <div id="player1-name-wrapper" class="player-form__name-wrapper player1-name__wrapper hidden">
+            <label id="player1-name__label" class="player-form__label" for="player1-name">Player 1 name:</label>
             <input id="player1-name" type="text" name="player1-name" placeholder="Player 1">
-          </div>
-          <div id="player2-name-wrapper" class="player2-name__wrapper hidden">
-            <label id="player2-name__label"  for="player2-name">Player 2 name:</label>
+          </div><div id="player2-name-wrapper" class="player-form__name-wrapper player2-name__wrapper hidden">
+            <label id="player2-name__label" class="player-form__label" for="player2-name">Player 2 name:</label>
             <input id="player2-name" type="text" name="player2-name" placeholder="Player 2">
           </div>
           <button id="start-game-btn" type="submit" class="btn start-game-btn" disabled>Start</button>
