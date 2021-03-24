@@ -66,6 +66,14 @@ const Gameboard = (() => {
     return squareText;
   }
 
+  const _clickAnimation = (element, animationClass, durationInMs) => {
+    element.classList.add(animationClass);
+    const removeAnimation = setInterval(() => {
+      element.classList.remove(animationClass);
+      clearInterval(removeAnimation);
+    }, durationInMs);
+  }
+
   const _clickSquare = e => {
     const clickedEl = e.target.closest(".board-square");
     if (clickedEl.querySelector(".board-square__text")) {
@@ -75,13 +83,14 @@ const Gameboard = (() => {
     let currentPlayerMark = GameController.currentPlayer.mark;
     let clickedSquareNum = parseInt(clickedEl.getAttribute("data-square"));
     gameboard[clickedEl.getAttribute("data-square")] = currentPlayerMark;
+    _clickAnimation(clickedEl, "square-click", 1000);
     clickedEl.appendChild(_createSquareText(currentPlayerMark));
     Gameboard.gameboard = gameboard;
 
     const winnerFound = _checkForWinner(clickedSquareNum, currentPlayerMark);
     if (winnerFound == true) {
       _setupClickEvents(winnerFound);
-      GameUI.gameStatus.textContent = `${GameController.currentPlayer.name} wins!`;
+      GameUI.gameStatus.textContent = `${GameController.currentPlayer.name} wins! 🎉`;
       if (GameController.currentPlayer.mark === "X"){
         Game.gameData.player1_wins++;
         GameUI.player1Wins.textContent = Game.gameData.player1_wins;
@@ -89,7 +98,7 @@ const Gameboard = (() => {
         const removeFlash = setInterval(() => {
           GameUI.player1Wins.closest(".tally-wrapper").classList.remove("flash-text");
           clearInterval(removeFlash);
-        }, 1500);
+        }, 4000);
       } else {
         Game.gameData.player2_wins++;
         GameUI.player2Wins.textContent = Game.gameData.player2_wins;
@@ -97,20 +106,20 @@ const Gameboard = (() => {
         const removeFlash = setInterval(() => {
           GameUI.player2Wins.closest(".tally-wrapper").classList.remove("flash-text");
           clearInterval(removeFlash);
-        }, 1500);
+        }, 4000);
       }
-      GameUI.boardMsg.classList.remove("opacity-0");
+      GameUI.boardMsg.classList.add("opacity-1");
     } else if (winnerFound == "tie") {
       _setupClickEvents(winnerFound);
-      GameUI.gameStatus.textContent = "Tie game!";
+      GameUI.gameStatus.textContent = "Tie game! 🤝";
       Game.gameData.tie_games++;
       GameUI.tieGames.textContent = Game.gameData.tie_games;
       GameUI.tieGames.closest(".tally-wrapper").classList.add("flash-text");
       const removeFlash = setInterval(() => {
         GameUI.tieGames.closest(".tally-wrapper").classList.remove("flash-text");
         clearInterval(removeFlash);
-      }, 1500);
-      GameUI.boardMsg.classList.remove("opacity-0");
+      }, 4000);
+      GameUI.boardMsg.classList.add("opacity-1");
     } else {
       GameController.currentPlayer = GameController.setActivePlayer(GameController.currentPlayer);
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
@@ -149,7 +158,7 @@ const Gameboard = (() => {
     }
     GameUI.gameStatus.textContent = `${GameController.currentPlayer.name}'s turn`;
     _setupClickEvents();
-    GameUI.boardMsg.classList.add("opacity-0");
+    GameUI.boardMsg.classList.remove("opacity-1");
   }
 
   return { gameboard, resetBoard, init }
@@ -199,7 +208,6 @@ const GameUI = (() => {
       playScreen.classList.add("show");
       playScreen.classList.remove("hide");
     } else {
-      
       innerWrapper.classList.add("unshift");
       innerWrapper.classList.remove("shift");
       startScreen.classList.add("show");
@@ -228,7 +236,7 @@ const GameUI = (() => {
 
     for (let i=0; i < boardSquares.length; i++) {
       let squareRevealDelay = setInterval(function() {
-        boardSquares[i].classList.add("reveal");
+        boardSquares[i].classList.add("scale-1");
         clearInterval(squareRevealDelay);
       }, i * 100);
       squareRevealDelay;
@@ -257,7 +265,7 @@ const GameUI = (() => {
         }
       
       for (let square of boardSquares) {
-        square.classList.contains("reveal") ? square.classList.remove("reveal") : null;
+        square.classList.contains("scale-") ? square.classList.remove("scale-") : null;
       }
       _initGameUI();
       

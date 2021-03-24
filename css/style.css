@@ -80,12 +80,25 @@ button.btn > .material-icons {
   justify-content: space-between;
 }
 
+.score-tally__title {
+  font-size: 1.25rem;
+}
+
 .game-status, .board-msg {
   text-align: center;
 }
 
 .game-status {
   margin: 1rem auto .5rem;
+  line-height: 1.25;
+}
+
+.board-msg {
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  padding: .25rem;
+  opacity: 0;
+  transition: all ease-in-out .2s;
 }
 
 .device__inner-wrapper {
@@ -196,7 +209,7 @@ button.btn > .material-icons {
   position: relative;
   background-color: black;
   border-radius: 40px;
-  margin: 3rem auto;
+  margin: 2rem auto;
   max-width: 600px;
   padding: 18px;
   border: 6px solid #808080;
@@ -239,6 +252,7 @@ button.btn > .material-icons {
   cursor: pointer;
   border-radius: 12px;
   transform: scale(0);
+  transition: all ease-in-out .25s;
 }
 
 .board-square::before {
@@ -247,21 +261,30 @@ button.btn > .material-icons {
   padding-top: 100%;
 }
 
-.reveal {
-  animation: .5s forwards revealSquare;
+.board-square.scale-1 {
+  transform: scale(1);
 }
 
-@keyframes revealSquare {
-  from {
-    transform: scale(0);
-  }
-  to {
+.board-square.scale-1.square-click {
+  animation: .5s linear forwards wigglyClick;
+}
+
+@keyframes wigglyClick {
+  0%   {
     transform: scale(1);
   }
-}
-
-.board-square.reveal:focus {
-  transform: scale(.5);
+  25%  {
+    transform: scale(.75);
+  }
+  50%  {
+    transform: scale(1.1);
+  }
+  75%  {
+    transform: scale(.9);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .board-square__text {
@@ -282,20 +305,20 @@ button.btn > .material-icons {
 
 .btn.new-game-btn {
   display: block;
-  margin: 1rem auto 0;
+  margin: 2rem auto 0;
 }
 
-.opacity-0 {
-  opacity: 0;
+.opacity-1 {
+  opacity: 1;
 }
 
 .flash-text {
-  animation: .5s linear 3 forwards flashText;
+  animation: .25s linear 6 alternate flashText;
 }
 
 @keyframes flashText {
   from {
-    opacit: 1;
+    opacity: 1;
   }
   to {
     opacity: 0;
