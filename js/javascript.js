@@ -271,7 +271,7 @@ const GameUI = (() => {
       
       if (e.target === onePlayerGameBtn) {
         e.target === onePlayerGameBtn ? Game.gameData.game_mode = "1 player" : null;
-        GameController.player2.name = "Computer";
+        GameController.player2.name = "Robob";
         player1NameWrapper.classList.remove("hidden");
         player2NameWrapper.classList.add("hidden");
       }
