@@ -64,8 +64,12 @@ button.btn > .material-icons {
 
 .page-title {
   display: block;
-  margin: 1rem auto 0;
+  margin: 1rem auto;
   text-align: center;
+}
+
+.start-screen__page-title.page-title {
+  font-size: 2rem;
 }
 
 .header, .game-status, .board-msg {
@@ -76,12 +80,28 @@ button.btn > .material-icons {
 }
 
 .score-wrapper {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tally-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .score-tally__title {
+  display: inline-block;
+  width: 80%;
   font-size: 1.25rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: .25rem;
+}
+
+.score-tally {
+  vertical-align: super;
 }
 
 .game-status, .board-msg {
@@ -215,7 +235,7 @@ button.btn > .material-icons {
   border: 6px solid #808080;
   border-top-color: #9e9e9e;
   border-left-color: #9e9e9e;
-  box-shadow: 3px 2px 5px 2px rgb(0 0 0 / 16%), 24px 12px 32px 0px rgb(0 0 0 / 50%), 34px 22px 52px 0px rgb(0 0 0 / 25%);
+  box-shadow: 3px 2px 5px 2px rgb(0 0 0 / 16%), 24px 12px 42px 0px rgb(0 0 0 / 55%), 34px 22px 82px 0 rgb(0 0 0 / 25%), 84px 62px 52px 0px rgb(0 0 0 / 15%);
   overflow: hidden;
 }
 
@@ -266,7 +286,7 @@ button.btn > .material-icons {
 }
 
 .board-square.scale-1.square-click {
-  animation: .5s linear forwards wigglyClick;
+  animation: .5s ease-out forwards wigglyClick;
 }
 
 @keyframes wigglyClick {
@@ -305,7 +325,7 @@ button.btn > .material-icons {
 
 .btn.new-game-btn {
   display: block;
-  margin: 2rem auto 0;
+  margin: 2rem auto;
 }
 
 .opacity-1 {
