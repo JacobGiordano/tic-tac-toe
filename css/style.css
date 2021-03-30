@@ -122,7 +122,8 @@ button.btn > .material-icons {
 .game-status {
   margin: 1rem auto .5rem;
   line-height: 1.25;
-  height: 3.75rem;
+  /* width: 350px; */
+  /* height: 3.75rem; */
 }
 
 .board-msg {
@@ -276,13 +277,14 @@ button.btn > .material-icons {
   margin-bottom: .5rem;
 }
 
-.player1-name__wrapper, .player2-name__wrapper {
+.player-form__name-wrapper {
   display: inline-block;
   text-align: left;
+  width: 100%;
 }
 
-.player2-name__wrapper {
-  margin-left: 1rem;
+.player-name {
+  width: 100%;
 }
 
 .player-form__btn, .start-game-btn {

@@ -191,10 +191,19 @@ const GameUI = (() => {
 
   const _checkForPlayerNames = () => {
     if (GameUI.player1Name.value.trim() !== "") {
-      GameController.player1.name = GameUI.player1Name.value;
+      GameController.player1.name = _truncatePlayerName(GameUI.player1Name.value);
     }
     if (GameUI.player2Name.value.trim() !== "") {
-      GameController.player2.name = GameUI.player2Name.value;
+      GameController.player2.name = _truncatePlayerName(GameUI.player2Name.value);
+    }
+  }
+
+  const _truncatePlayerName = (playerName) => {
+    if (playerName.length > 12) {
+      let name = playerName.substring(0, 12) + "…";
+      return name;
+    } else {
+      return playerName;
     }
   }
 
