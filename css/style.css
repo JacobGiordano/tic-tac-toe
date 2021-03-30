@@ -111,10 +111,6 @@ button.btn > .material-icons {
   text-overflow: ellipsis;
 }
 
-.score-tally {
-  vertical-align: super;
-}
-
 .game-status, .board-msg {
   text-align: center;
 }
@@ -122,8 +118,6 @@ button.btn > .material-icons {
 .game-status {
   margin: 1rem auto .5rem;
   line-height: 1.25;
-  /* width: 350px; */
-  /* height: 3.75rem; */
 }
 
 .board-msg {
@@ -188,7 +182,6 @@ button.btn > .material-icons {
 }
 
 .device-reflection {
-  /* content: ""; */
   display: block;
   position: absolute;
   width: 200%;
