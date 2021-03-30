@@ -139,7 +139,8 @@ button.btn > .material-icons {
   border-radius: 40px;
   left: 50%;
   top: 50%;
-  max-width: 400px;
+  width: 400px;
+  height: 760px;
   padding: 18px;
   border: 6px solid #808080;
   border-top-color: #9e9e9e;
@@ -381,6 +382,52 @@ button.btn > .material-icons {
   }
   to {
     opacity: 0;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  body {
+    min-height: unset;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+  }
+  .device {
+    box-shadow: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+  .device__inner-wrapper {
+    margin: 1rem 0;
+  }
+  button, label, input {
+    font-size: 1.25rem;
+  }
+  input {
+    height: 3.25rem;
+  }
+  .side-btns, .device__reflection-wrapper {
+    display: none;
+  }
+  .start-screen {
+    padding-top: 1rem;
+  }
+  .start-screen > button {
+    margin: 2rem 0;
+    display: block;
+    width: 100%;
+    height: 3.5rem;
+  }
+  .start-screen .player-names-form .player-form__name-wrapper {
+    margin: .5rem 0;
+    width: 100%;
+  }
+  .start-screen .player-names-form .player-form__name-wrapper .player-name {
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
   }
 }
 
