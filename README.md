@@ -1,5 +1,6 @@
 # Tic Tac Toe
 
-A little tic-tac-toe game designed to feel like a mobile app.
+A minimalist Tic-Tac-Toe game designed for mobile…
+even on desktop.
 
 Check it out here 👉 https://jacobgiordano.github.io/tic-tac-toe/
