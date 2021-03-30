@@ -85,6 +85,8 @@ button.btn > .material-icons {
 }
 
 .tally-wrapper {
+  display: flex;
+  align-items: baseline;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -92,14 +94,17 @@ button.btn > .material-icons {
 
 .tally-wrapper:first-of-type {
   text-align: left;
+  justify-content: flex-start;
 }
 
 .tally-wrapper:nth-child(2) {
   text-align: center;
+  justify-content: center;
 }
 
 .tally-wrapper:last-of-type {
   text-align: right;
+  justify-content: flex-end;
 }
 
 .score-tally__title {
@@ -109,6 +114,10 @@ button.btn > .material-icons {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.score-tally {
+  font-size: 1.25rem;
 }
 
 .game-status, .board-msg {

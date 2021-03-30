@@ -93,7 +93,7 @@ const Gameboard = (() => {
       GameUI.gameStatus.textContent = `${GameController.currentPlayer.name} wins! 🎉`;
       if (GameController.currentPlayer.mark === "X"){
         Game.gameData.player1_wins++;
-        GameUI.player1Wins.textContent = Game.gameData.player1_wins;
+        GameUI.player1Wins.textContent = `: ${Game.gameData.player1_wins}`;
         GameUI.player1Wins.closest(".tally-wrapper").classList.add("flash-text");
         const removeFlash = setInterval(() => {
           GameUI.player1Wins.closest(".tally-wrapper").classList.remove("flash-text");
@@ -101,7 +101,7 @@ const Gameboard = (() => {
         }, 4000);
       } else {
         Game.gameData.player2_wins++;
-        GameUI.player2Wins.textContent = Game.gameData.player2_wins;
+        GameUI.player2Wins.textContent = `: ${Game.gameData.player2_wins}`;
         GameUI.player2Wins.closest(".tally-wrapper").classList.add("flash-text");
         const removeFlash = setInterval(() => {
           GameUI.player2Wins.closest(".tally-wrapper").classList.remove("flash-text");
@@ -113,7 +113,7 @@ const Gameboard = (() => {
       _setupClickEvents(winnerFound);
       GameUI.gameStatus.textContent = "Tie game! 🤝";
       Game.gameData.tie_games++;
-      GameUI.tieGames.textContent = Game.gameData.tie_games;
+      GameUI.tieGames.textContent = `: ${Game.gameData.tie_games}`;
       GameUI.tieGames.closest(".tally-wrapper").classList.add("flash-text");
       const removeFlash = setInterval(() => {
         GameUI.tieGames.closest(".tally-wrapper").classList.remove("flash-text");
@@ -227,11 +227,11 @@ const GameUI = (() => {
   }
 
   const _initGameUI = () => {
-    player1TallyTitle.textContent = GameController.player1.name + ": ";
-    player2TallyTitle.textContent = GameController.player2.name + ": ";
-    player1Wins.textContent = Game.gameData.player1_wins;
-    player2Wins.textContent = Game.gameData.player2_wins;
-    tieGames.textContent = Game.gameData.tie_games;
+    player1TallyTitle.textContent = GameController.player1.name;
+    player2TallyTitle.textContent = GameController.player2.name;
+    player1Wins.textContent = `: ${Game.gameData.player1_wins}`;
+    player2Wins.textContent = `: ${Game.gameData.player2_wins}`;
+    tieGames.textContent = `: ${Game.gameData.tie_games}`;
     gameStatus.textContent = GameController.currentPlayer.name + "'s turn";
     Gameboard.init();
   }
