@@ -203,11 +203,22 @@ button.btn > .material-icons {
 }
 
 .device__inner-wrapper > *.show {
-  animation: .5s forwards show;
+  -webkit-animation: .5s forwards show;
+          animation: .5s forwards show;
 }
 
 .device__inner-wrapper > *.hide {
-  animation: .5s forwards hide;
+  -webkit-animation: .5s forwards hide;
+          animation: .5s forwards hide;
+}
+
+@-webkit-keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes show {
@@ -216,6 +227,15 @@ button.btn > .material-icons {
   }
   to {
     opacity: 1;
+  }
+}
+
+@-webkit-keyframes hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 
@@ -229,19 +249,29 @@ button.btn > .material-icons {
 }
 
 .device__inner-wrapper {
-  display: grid;
+  display: flex;
   width: 200%;
   min-height: 10rem;
   margin: 2rem 0;
-  grid-template-columns: repeat(2, 1fr);
 }
 
 .device__inner-wrapper.shift {
-  animation: .5s forwards shift;
+  -webkit-animation: .5s forwards shift;
+          animation: .5s forwards shift;
 }
 
 .device__inner-wrapper.unshift {
-  animation: .5s forwards unshift;
+  -webkit-animation: .5s forwards unshift;
+          animation: .5s forwards unshift;
+}
+
+@-webkit-keyframes shift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 @keyframes shift {
@@ -250,6 +280,15 @@ button.btn > .material-icons {
   }
   to {
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@-webkit-keyframes unshift {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -264,6 +303,8 @@ button.btn > .material-icons {
 
 .start-screen, .play-screen {
   opacity: 0;
+  flex: 1 1 0;
+  width: 50%;
 }
 
 .start-screen {
@@ -333,7 +374,23 @@ button.btn > .material-icons {
 }
 
 .board-square.scale-1.square-click {
-  animation: .5s ease-out forwards wigglyClick;
+  -webkit-animation: .5s ease-out forwards wigglyClick;
+          animation: .5s ease-out forwards wigglyClick;
+}
+
+@-webkit-keyframes wigglyClick {
+  0%   {
+    transform: scale(1);
+  }
+  25%  {
+    transform: scale(.85);
+  }
+  50%  {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes wigglyClick {
@@ -377,7 +434,17 @@ button.btn > .material-icons {
 }
 
 .flash-text {
-  animation: .25s linear 6 alternate flashText;
+  -webkit-animation: .25s linear 6 alternate flashText;
+          animation: .25s linear 6 alternate flashText;
+}
+
+@-webkit-keyframes flashText {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes flashText {
